@@ -13,14 +13,7 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         public UsuarioRepository()
         {
             _usuariosMock = new List<Usuario>();
-
-            _usuariosMock.Add(new Usuario()
-            {
-                IdUsuario = 1,
-                Login = "12542471657",
-                Perfil = PerfilUsuario.Cliente,
-                Senha = "Raposa123"
-            });
+            _usuariosMock.Add(new Usuario(1,PerfilUsuario.Cliente, "12542471657", "Raposa123"));
         }
 
         public void Atualizar(Usuario usuario)
@@ -37,10 +30,10 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
             }
         }
 
-        public void Deletar(Usuario usuario)
+        public void Deletar(int idUsuario)
         {
             if (_usuariosMock != null)
-                _usuariosMock.RemoveAll(usuarioMock => usuarioMock.IdUsuario == usuario.IdUsuario);
+                _usuariosMock.RemoveAll(usuarioMock => usuarioMock.IdUsuario == idUsuario);
         }
 
         public void Inserir(Usuario usuario)

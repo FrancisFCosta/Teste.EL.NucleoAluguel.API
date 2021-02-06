@@ -10,6 +10,6 @@ namespace Teste.EL.NucleoAluguel.Domain.Repositories
         Usuario Obter(int idUsuario);
         void Inserir(Usuario usuario);
         void Atualizar(Usuario usuario);
-        void Deletar(Usuario usuario);
+        void Deletar(int idUsuario);
     }
 }

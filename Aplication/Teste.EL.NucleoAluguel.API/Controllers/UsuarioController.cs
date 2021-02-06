@@ -58,17 +58,28 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// Cria um novo usuário.
         /// </summary>
         /// <param name="Usuario"> Modelo com informações do usuário</param>
-        [HttpPost("{Usuario}")]
+        [HttpPost()]
         [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
         public IActionResult Post([FromBody] UsuarioModel usuarioModelInsersao)
         {
             try
             {
                 Usuario usuarioConversao = _mapper.Map<UsuarioModel, Domain.Entities.Usuario>(usuarioModelInsersao);
+
                 if (usuarioConversao != null)
-                    _usuarioRepositorio.Inserir(usuarioConversao);
+                {
+                    if (usuarioConversao.Invalid)
+                        return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(usuarioConversao.Notifications));
+
+                    var usuarioExistente = _usuarioRepositorio.Obter(usuarioConversao.IdUsuario);
+                    if (usuarioExistente != null)
+                        return StatusCode(StatusCodes.Status422UnprocessableEntity, "Não foi possível realizar a operação: ID informado é utilizado por um usuário existente");
+                    else
+                        _usuarioRepositorio.Inserir(usuarioConversao);
+                }
             }
             catch (Exception)
             {
@@ -78,16 +89,70 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
             return Ok();
         }
 
-        // PUT api/<UsuarioController>/5
-        [HttpPut("{Usuario}")]
-        public void Put([FromBody] UsuarioModel value)
+        /// <summary>
+        /// Atualiza informações do usuário
+        /// </summary>
+        /// <param name="Usuario"> Objeto contendo dados do usuário</param>
+        /// 
+        [HttpPut()]
+        [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
+        public IActionResult Put([FromBody] UsuarioModel usuarioAtualizacao)
         {
+            Usuario usuarioConversao = _mapper.Map<UsuarioModel, Domain.Entities.Usuario>(usuarioAtualizacao);
+
+            try
+            {
+                if (usuarioConversao != null)
+                {
+                    if (usuarioConversao.Invalid)
+                        return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(usuarioConversao.Notifications));
+
+                    var usuarioExistente = _usuarioRepositorio.Obter(usuarioConversao.IdUsuario);
+                    if (usuarioExistente != null)
+                        _usuarioRepositorio.Atualizar(usuarioConversao);
+                    else
+                        return StatusCode(StatusCodes.Status404NotFound, "Não foi possível realizar a operação: usuário não encontrado.");
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "O Serviço está temporariamente indisponível."); throw;
+            }
+
+            return Ok();
         }
 
-        // DELETE api/<UsuarioController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Atualiza informações do usuário
+        /// </summary>
+        /// <param name="Usuario"> Objeto contendo dados do usuário</param>
+        /// 
+        [HttpDelete()]
+        [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
+        public IActionResult Delete(int id)
         {
+            if (id <= 0)
+                return BadRequest("O ID informado é inválido");
+
+            try
+            {
+                var usuarioExistente = _usuarioRepositorio.Obter(id);
+                if (usuarioExistente != null)
+                    _usuarioRepositorio.Deletar(id);
+                else
+                    return StatusCode(StatusCodes.Status404NotFound, "Não foi possível realizar a operação: usuário não encontrado.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "O Serviço está temporariamente indisponível."); throw;
+            }
+
+            return Ok();
         }
     }
 }
