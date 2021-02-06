@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Teste.EL.NucleoAluguel.Domain\Teste.EL.NucleoAluguel.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\CrossCutting\Teste.EL.NucleoAluguel.CrossCutting\Teste.EL.NucleoAluguel.CrossCutting.csproj" />
+  </ItemGroup>
+
+
+</Project>
