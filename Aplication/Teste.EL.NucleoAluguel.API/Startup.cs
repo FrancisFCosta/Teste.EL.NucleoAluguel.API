@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using Teste.EL.NucleoAluguel.CrossCutting.Assemblies;
 using Teste.EL.NucleoAluguel.CrossCutting.InversionOfControl;
@@ -51,16 +53,19 @@ namespace Teste.EL.NucleoAluguel.API
             services.AddAutoMapper(AssemblyReflection.GetCurrentAssemblies());
             services.AddResolverDependencies();
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddSwaggerGen(options =>
+
+            services.AddSwaggerGen(c =>
             {
-                options.SwaggerDoc("v1",
+                c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
-
-                        Title = "Teste.EL.NucleoAluguel.API",
-                        Version = "v1",
-                        Description = "API - Nucleo Alguel [Teste EL]"
+                        Title = "Teste.EL.NucleoAluguel",
+                        Description = "API - Nucleo Alguel [Teste EL]",
+                        Version = "v1"
                     });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -70,7 +75,6 @@ namespace Teste.EL.NucleoAluguel.API
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UsePathBase("/Teste.EL.NucleoAluguel.API");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

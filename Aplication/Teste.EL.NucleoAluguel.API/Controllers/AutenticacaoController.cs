@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Teste.EL.NucleoAluguel.API.Auth;
 using Teste.EL.NucleoAluguel.API.Models;
 using Teste.EL.NucleoAluguel.Domain.Entities;
@@ -26,9 +23,10 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Cria um novo usuário.
+        /// Autentica o usuário, possibilitando acesso à outros serviços da solução.
         /// </summary>
-        /// <param name="Usuario"> Modelo com informações do usuário</param>
+        /// <param name="Usuario"> Modelo com informações do usuário para autenticação</param>
+        /// <returns>Objeto contendo informações do usuário e o Token para utilização.</returns>
         [HttpPost()]
         [Route("Autenticar")]
         [AllowAnonymous]
@@ -36,7 +34,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public ActionResult<dynamic> Authenticate([FromBody] UsuarioModel usuarioModelInsersao)
+        public ActionResult<dynamic> Post([FromBody] UsuarioModel usuarioModelInsersao)
         {
             try
             {
@@ -51,6 +49,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
 
                     if (usuarioExistente != null)
                     {
+
                         var token = TokenService.GenerateToken(usuarioExistente);
                         var usuarioModel = _mapper.Map<Domain.Entities.Usuario, UsuarioModel>(usuarioExistente);
                         usuarioModel.Senha = String.Empty;
@@ -62,7 +61,6 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                     }
                     else
                         return NotFound("Usuário ou senha inválidos");
-
                 }
             }
             catch (Exception ex)

@@ -1,7 +1,4 @@
 ﻿using Flunt.Validations;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Teste.EL.NucleoAluguel.Domain.Enums;
 
 namespace Teste.EL.NucleoAluguel.Domain.Entities
@@ -13,7 +10,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public string Login { get; set; }
         public string Senha { get; set; }
 
-        public Usuario(int idUsuario, PerfilUsuario perfil, string login, string senha) 
+        public Usuario(int idUsuario, PerfilUsuario perfil, string login, string senha)
         {
             IdUsuario = idUsuario;
             Perfil = perfil;

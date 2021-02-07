@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Teste.EL.NucleoAluguel.Domain.Entities;
 using Teste.EL.NucleoAluguel.Domain.Enums;
 using Teste.EL.NucleoAluguel.Domain.Repositories;
@@ -45,7 +43,14 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
                 return _usuariosMock.Where(usuarioMock => usuarioMock.IdUsuario == idUsuario).FirstOrDefault();
             else
                 return null;
+        }
 
+        public Usuario ObterPorLogin(string login)
+        {
+            if (_usuariosMock != null)
+                return _usuariosMock.Where(usuarioMock => usuarioMock.Login.ToLower().Trim() == login.ToLower().Trim()).FirstOrDefault();
+            else
+                return null;
         }
 
         public Usuario ObterPorLoginESenha(string login, string senha)
@@ -54,7 +59,6 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
                 return _usuariosMock.Where(usuarioMock => usuarioMock.Login == login && usuarioMock.Senha == senha).FirstOrDefault();
             else
                 return null;
-
         }
     }
 }

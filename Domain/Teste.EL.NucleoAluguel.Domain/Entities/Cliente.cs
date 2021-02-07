@@ -1,7 +1,5 @@
 ﻿using Flunt.Validations;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Teste.EL.NucleoAluguel.Domain.Entities
 {

@@ -41,7 +41,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
                 .IsLowerThan(0, ValorAluguel, nameof(ValorAluguel), "O campo ValorAluguel é inválido"));
         }
 
-        private double CalcularTotalCobrancaAdicional() 
+        private double CalcularTotalCobrancaAdicional()
         {
             if (this.Invalid)
                 return 0;

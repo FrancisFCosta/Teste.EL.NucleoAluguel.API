@@ -1,7 +1,4 @@
 ﻿using Flunt.Validations;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Teste.EL.NucleoAluguel.Domain.Enums;
 
 namespace Teste.EL.NucleoAluguel.Domain.Entities

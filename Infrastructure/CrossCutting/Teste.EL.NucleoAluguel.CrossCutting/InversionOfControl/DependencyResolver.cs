@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using Teste.EL.NucleoAluguel.CrossCutting.Assemblies;
 
 namespace Teste.EL.NucleoAluguel.CrossCutting.InversionOfControl

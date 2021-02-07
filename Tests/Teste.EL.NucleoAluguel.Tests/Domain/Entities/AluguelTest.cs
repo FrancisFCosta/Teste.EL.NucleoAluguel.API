@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Teste.EL.NucleoAluguel.Domain.Entities;
+﻿using Teste.EL.NucleoAluguel.Domain.Entities;
 using Teste.EL.NucleoAluguel.Domain.Enums;
 using Xunit;
 
@@ -12,7 +9,7 @@ namespace Teste.EL.NucleoAluguel.Tests.Domain.Entities
         [Fact]
         public void CriarAluguel_AluguelInvalido_Test()
         {
-            var Aluguel = new Aluguel(0,0,0,CategoriaVeiculo.Completo,0,0);
+            var Aluguel = new Aluguel(0, 0, 0, CategoriaVeiculo.Completo, 0, 0);
 
             Assert.True(Aluguel.Invalid);
             Assert.Contains(Aluguel.Notifications, n => n.Property == nameof(Aluguel.IdAluguel));

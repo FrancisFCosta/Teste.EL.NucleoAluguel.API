@@ -1,16 +1,15 @@
-﻿using System;
+﻿using EnumsNET;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
-using Teste.EL.NucleoAluguel.Domain.Entities;
 using System.Text;
-using EnumsNET;
+using Teste.EL.NucleoAluguel.Domain.Entities;
 
 namespace Teste.EL.NucleoAluguel.API.Auth
 {
+    [ExcludeFromCodeCoverage]
     public static class TokenService
     {
         public static string GenerateToken(Usuario usuario) 

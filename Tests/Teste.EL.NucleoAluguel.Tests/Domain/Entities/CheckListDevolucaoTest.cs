@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Teste.EL.NucleoAluguel.Domain.Entities;
-using Teste.EL.NucleoAluguel.Domain.Enums;
 using Xunit;
 
 namespace Teste.EL.NucleoAluguel.Tests.Domain.Entities
