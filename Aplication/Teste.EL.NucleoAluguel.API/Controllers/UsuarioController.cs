@@ -43,7 +43,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
             {
                 usuario = _usuarioRepositorio.Obter(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "O Serviço está temporariamente indisponível.");
             }

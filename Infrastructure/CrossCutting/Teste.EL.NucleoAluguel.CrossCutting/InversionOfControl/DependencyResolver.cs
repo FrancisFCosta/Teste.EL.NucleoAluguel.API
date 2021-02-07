@@ -40,7 +40,7 @@ namespace Teste.EL.NucleoAluguel.CrossCutting.InversionOfControl
                 var @interface = AssemblyReflection.FindInterface(repo, domainInterfaces);
 
                 if (@interface != null)
-                    services.AddScoped(@interface, repo);
+                    services.AddSingleton(@interface, repo);
             }
         }
     }

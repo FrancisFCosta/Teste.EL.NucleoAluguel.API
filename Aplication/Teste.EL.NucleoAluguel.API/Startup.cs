@@ -47,6 +47,7 @@ namespace Teste.EL.NucleoAluguel.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UsePathBase("/Teste.EL.NucleoAluguel.API");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

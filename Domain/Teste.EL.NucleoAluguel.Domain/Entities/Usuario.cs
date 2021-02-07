@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Teste.EL.NucleoAluguel.Domain.Enums;
 
 namespace Teste.EL.NucleoAluguel.Domain.Entities
 {
@@ -30,6 +31,14 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
             AddNotifications(new Contract()
                 .Requires()
                 .IsLowerOrEqualsThan(1, IdUsuario, nameof(IdUsuario), "O campo IdUsuario é inválido"));
+
+            if (Perfil == PerfilUsuario.Cliente)
+            {
+                AddNotifications(new Contract()
+                .Requires()
+                .HasLen(Login, 11, nameof(Login), "O campo é Login inválido: O campo CPF deve conter 11 dígitos")
+                .IsDigit(Login, nameof(Login), "O campo é Login inválido: O campo CPF deve conter apenas números"));
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Teste.EL.NucleoAluguel.Domain.Entities;
+using Teste.EL.NucleoAluguel.Domain.Enums;
 using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
@@ -13,20 +14,15 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         public UsuarioRepository()
         {
             _usuariosMock = new List<Usuario>();
-            _usuariosMock.Add(new Usuario(1,PerfilUsuario.Cliente, "12542471657", "Raposa123"));
+            _usuariosMock.Add(new Usuario(1, PerfilUsuario.Cliente, "12542471657", "Raposa123"));
         }
 
         public void Atualizar(Usuario usuario)
         {
             if (_usuariosMock != null)
             {
-                _usuariosMock.ForEach(usuarioMock =>
-                {
-                    if (usuarioMock.IdUsuario == usuario.IdUsuario)
-                    {
-                        usuarioMock = usuario;
-                    }
-                });
+                _usuariosMock.RemoveAll(_usuariosMock => _usuariosMock.IdUsuario == usuario.IdUsuario);
+                _usuariosMock.Add(usuario);
             }
         }
 
