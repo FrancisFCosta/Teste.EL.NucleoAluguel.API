@@ -30,7 +30,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
 
             AddNotifications(new Contract()
                 .Requires()
-                .IsLowerOrEqualsThan(1, IdUsuario, nameof(IdUsuario), "O campo IdUsuario é inválido"));
+                .IsLowerOrEqualsThan(0, IdUsuario, nameof(IdUsuario), "O campo IdUsuario é inválido"));
 
             if (Perfil == PerfilUsuario.Cliente)
             {

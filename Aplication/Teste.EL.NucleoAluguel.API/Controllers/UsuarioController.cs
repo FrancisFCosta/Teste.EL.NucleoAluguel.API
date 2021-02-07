@@ -5,6 +5,7 @@ using System;
 using Teste.EL.NucleoAluguel.API.Models;
 using Teste.EL.NucleoAluguel.Domain.Entities;
 using Teste.EL.NucleoAluguel.Domain.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,6 +29,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// <param name="Id"> Id do usuário</param>
         /// <returns>Objeto contendo informações do usuário</returns>
         [HttpGet("{id}")]
+        [Authorize(Roles ="Operador")]
         [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
@@ -59,6 +61,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <param name="Usuario"> Modelo com informações do usuário</param>
         [HttpPost()]
+        [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
@@ -95,6 +98,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// <param name="Usuario"> Objeto contendo dados do usuário</param>
         /// 
         [HttpPut()]
+        [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
@@ -130,6 +134,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// <param name="Usuario"> Objeto contendo dados do usuário</param>
         /// 
         [HttpDelete()]
+        [Authorize(Roles = "Operador")]
         [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]

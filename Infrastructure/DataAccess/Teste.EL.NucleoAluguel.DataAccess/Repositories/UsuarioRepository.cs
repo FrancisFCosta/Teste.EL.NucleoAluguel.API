@@ -14,7 +14,8 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         public UsuarioRepository()
         {
             _usuariosMock = new List<Usuario>();
-            _usuariosMock.Add(new Usuario(1, PerfilUsuario.Cliente, "12542471657", "Raposa123"));
+            _usuariosMock.Add(new Usuario(1, PerfilUsuario.Cliente, "12542471657", "123456"));
+            _usuariosMock.Add(new Usuario(2, PerfilUsuario.Operador, "137108", "456789"));
         }
 
         public void Atualizar(Usuario usuario)
@@ -42,6 +43,15 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         {
             if (_usuariosMock != null)
                 return _usuariosMock.Where(usuarioMock => usuarioMock.IdUsuario == idUsuario).FirstOrDefault();
+            else
+                return null;
+
+        }
+
+        public Usuario ObterPorLoginESenha(string login, string senha)
+        {
+            if (_usuariosMock != null)
+                return _usuariosMock.Where(usuarioMock => usuarioMock.Login == login && usuarioMock.Senha == senha).FirstOrDefault();
             else
                 return null;
 
