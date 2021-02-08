@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Teste.EL.NucleoAluguel.API.Models;
+using Teste.EL.NucleoAluguel.Domain.Entities;
 
 namespace Teste.EL.NucleoAluguel.API.Mapping
 {
@@ -7,12 +8,12 @@ namespace Teste.EL.NucleoAluguel.API.Mapping
     {
         public UsuarioMap()
         {
-            CreateMap<Domain.Entities.Usuario, UsuarioModel>()
+            CreateMap<Usuario, UsuarioModel>()
                 .ForMember(dest => dest.IdUsuario, m => m.MapFrom(src => src.IdUsuario))
                 .ForMember(dest => dest.Login, m => m.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Perfil, m => m.MapFrom(src => src.Perfil));
 
-            CreateMap<UsuarioModel, Domain.Entities.Usuario>()
+            CreateMap<UsuarioModel, Usuario>()
                 .ForMember(dest => dest.IdUsuario, m => m.MapFrom(src => src.IdUsuario))
                 .ForMember(dest => dest.Login, m => m.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Perfil, m => m.MapFrom(src => src.Perfil))

@@ -10,7 +10,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/usuarios")]
     [ApiController]
     public class UsuarioController : ControllerBase
     {

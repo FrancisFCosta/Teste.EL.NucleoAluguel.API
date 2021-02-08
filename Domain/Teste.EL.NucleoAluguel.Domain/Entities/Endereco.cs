@@ -4,7 +4,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
 {
     public class Endereco : BaseEntity
     {
-        public int IdCliente { get; set; }
+        public int IdEndereco { get; set; }
         public string CEP { get; set; }
         public string Logradouro { get; set; }
         public string Numero { get; set; }
@@ -12,20 +12,15 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public string Cidade { get; set; }
         public string Estado { get; set; }
 
-        public Endereco(int idCliente, string cep, string logradouro, string numero, string complemento, string cidade, string estado)
+        public Endereco(int idEndereco, string cep, string logradouro, string numero, string complemento, string cidade, string estado)
         {
-            IdCliente = idCliente;
+            IdEndereco = idEndereco;
             CEP = cep;
             Logradouro = logradouro;
             Numero = numero;
             Complemento = complemento;
             Cidade = cidade;
             Estado = estado;
-
-
-            AddNotifications(new Contract()
-                .Requires()
-                .IsLowerOrEqualsThan(1, IdCliente, nameof(IdCliente), "O campo IdCliente é inválido"));
 
             AddNotifications(new Contract()
                 .Requires()

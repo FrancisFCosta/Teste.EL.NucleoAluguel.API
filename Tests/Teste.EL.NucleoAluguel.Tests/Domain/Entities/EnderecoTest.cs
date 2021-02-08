@@ -11,7 +11,6 @@ namespace Teste.EL.NucleoAluguel.Tests.Domain.Entities
             var Endereco = new Endereco(0, null, null, null, null, null, null);
 
             Assert.True(Endereco.Invalid);
-            Assert.Contains(Endereco.Notifications, n => n.Property == nameof(Endereco.IdCliente));
             Assert.Contains(Endereco.Notifications, n => n.Property == nameof(Endereco.Logradouro));
             Assert.Contains(Endereco.Notifications, n => n.Property == nameof(Endereco.Numero));
             Assert.Contains(Endereco.Notifications, n => n.Property == nameof(Endereco.CEP));

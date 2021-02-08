@@ -15,7 +15,6 @@ namespace Teste.EL.NucleoAluguel.Tests.Domain.Entities
             Assert.Contains(Cliente.Notifications, n => n.Property == nameof(Cliente.IdCliente));
             Assert.Contains(Cliente.Notifications, n => n.Property == nameof(Cliente.Nome));
             Assert.Contains(Cliente.Notifications, n => n.Property == nameof(Cliente.CPF));
-            Assert.Contains(Cliente.Notifications, n => n.Property == nameof(Cliente.IdEndereco));
             Assert.Contains(Cliente.Notifications, n => n.Property == nameof(Cliente.Email));
             Assert.Contains(Cliente.Notifications, n => n.Property == nameof(Cliente.Celular));
         }

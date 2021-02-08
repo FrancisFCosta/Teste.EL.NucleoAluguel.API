@@ -5,6 +5,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
 {
     public class Veiculo : BaseEntity
     {
+        public int IdVeiculo { get; set; }
         public string Placa { get; set; }
         public int IdMarca { get; set; }
         public int IdModelo { get; set; }
@@ -13,8 +14,9 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public TipoCombustivel Combustivel { get; set; }
         public double LimitePortamalas { get; set; }
         public CategoriaVeiculo Categoria { get; set; }
-        public Veiculo(string placa, int idMarca, int idModelo, string ano, double valorHora, TipoCombustivel tipoCombustivel, double limitePortamalas, CategoriaVeiculo categoria)
+        public Veiculo(int idVeiculo, string placa, int idMarca, int idModelo, string ano, double valorHora, TipoCombustivel tipoCombustivel, double limitePortamalas, CategoriaVeiculo categoria)
         {
+            IdVeiculo = idVeiculo;
             Placa = placa;
             IdMarca = idMarca;
             IdModelo = idModelo;

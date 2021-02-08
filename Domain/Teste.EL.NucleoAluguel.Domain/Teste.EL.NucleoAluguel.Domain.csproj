@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="Flunt" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Flunt" Version="1.0.5" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

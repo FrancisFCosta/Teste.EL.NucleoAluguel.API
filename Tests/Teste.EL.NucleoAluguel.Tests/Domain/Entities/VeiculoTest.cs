@@ -9,7 +9,7 @@ namespace Teste.EL.NucleoAluguel.Tests.Domain.Entities
         [Fact]
         public void CriarVeiculo_VeiculoInvalido_Test()
         {
-            var Veiculo = new Veiculo(null, 0, 0, null, -1, TipoCombustivel.Alcool, -1, CategoriaVeiculo.Completo);
+            var Veiculo = new Veiculo(0,null, 0, 0, null, -1, TipoCombustivel.Alcool, -1, CategoriaVeiculo.Completo);
 
             Assert.True(Veiculo.Invalid);
             Assert.Contains(Veiculo.Notifications, n => n.Property == nameof(Veiculo.Placa));
@@ -22,7 +22,7 @@ namespace Teste.EL.NucleoAluguel.Tests.Domain.Entities
         [Fact]
         public void CriarVeiculo_VeiculoValido_Test()
         {
-            var Veiculo = new Veiculo("QXH6632", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo);
+            var Veiculo = new Veiculo(1, "QXH6632", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo);
 
             Assert.True(Veiculo.Valid);
         }

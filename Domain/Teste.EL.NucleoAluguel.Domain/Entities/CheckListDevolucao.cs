@@ -5,6 +5,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
 {
     public class CheckListDevolucao : BaseEntity
     {
+        public int IdCheckListDevolucao { get; set; }
         public int IdAluguel { get; set; }
         public int IdVeiculo { get; set; }
         public DateTime DataDevolucao { get; set; }
