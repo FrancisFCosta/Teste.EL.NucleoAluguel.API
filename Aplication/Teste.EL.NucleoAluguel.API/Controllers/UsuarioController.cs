@@ -10,7 +10,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/usuarios")]
+    [Route("api/v1/usuarios")]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
@@ -85,7 +85,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações do usuário
+        /// Atualiza informações do usuário.
         /// </summary>
         /// <param name="Usuario"> Objeto contendo dados do usuário</param>
         /// 

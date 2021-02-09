@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Enums.NET" Version="4.0.0" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.0" />
@@ -18,6 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\Teste.EL.NucleoAluguel.Domain\Teste.EL.NucleoAluguel.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\CrossCutting\Teste.EL.NucleoAluguel.CrossCutting\Teste.EL.NucleoAluguel.CrossCutting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ModeloContratoAluguel.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

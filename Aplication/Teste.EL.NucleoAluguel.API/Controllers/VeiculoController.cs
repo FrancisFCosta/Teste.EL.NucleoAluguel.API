@@ -14,7 +14,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/veiculos")]
+    [Route("api/v1/veiculos")]
     [ApiController]
     public class VeiculoController : ControllerBase
     {
@@ -47,6 +47,31 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                     return NotFound(Constantes.Mensagens.VeiculoNaoEncontrado);
 
                 return Ok(_mapper.Map<Veiculo, VeiculoModel>(veiculo));
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel);
+            }
+        }
+
+        /// <summary>
+        /// Lista veículos disponíveis para aluguel.
+        /// </summary>
+        /// <returns>Lista de veículos disponíveis para aluguel.</returns>
+        [HttpGet()]
+        [Route("disponiveis")]
+        [Authorize(Roles = "Operador, Cliente")]
+        [ProducesResponseType(typeof(VeiculoModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
+        public IActionResult ListarDisponiveis()
+        {
+            try
+            {
+                List<Veiculo> listaVeiculos = _veiculoRepositorio.ListarDisponivel();
+                List<VeiculoModel> listaModel = listaVeiculos != null && listaVeiculos.Any() ? _mapper.Map<List<Veiculo>, List<VeiculoModel>>(listaVeiculos) : new List<VeiculoModel>();
+
+                return Ok(listaModel);
             }
             catch (Exception)
             {
@@ -139,7 +164,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações do veiculo
+        /// Atualiza informações do veiculo.
         /// </summary>
         /// <param name="Veiculo"> Objeto contendo dados da veiculo</param>
         /// 

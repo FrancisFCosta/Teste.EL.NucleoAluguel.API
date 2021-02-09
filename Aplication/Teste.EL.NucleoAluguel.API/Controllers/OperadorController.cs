@@ -10,7 +10,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/operadores")]
+    [Route("api/v1/operadores")]
     [ApiController]
     public class OperadorController : ControllerBase
     {
@@ -85,7 +85,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações do operador
+        /// Atualiza informações do operador.
         /// </summary>
         /// <param name="Operador"> Objeto contendo dados do operador</param>
         /// 

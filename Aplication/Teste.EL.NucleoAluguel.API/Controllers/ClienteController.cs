@@ -10,7 +10,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/clientes")]
+    [Route("api/v1/clientes")]
     [ApiController]
     public class ClienteController : ControllerBase
     {
@@ -31,7 +31,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// <param name="cpf"> CPF do cliente</param>
         /// <returns>Objeto contendo informações do Cliente.</returns>
         [HttpGet("{cpf}")]
-        [Authorize(Roles = "Operador")]
+        [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(ClienteModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
@@ -107,7 +107,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações do cliente
+        /// Atualiza informações do cliente.
         /// </summary>
         /// <param name="Cliente"> Objeto contendo dados do cliente</param>
         /// 

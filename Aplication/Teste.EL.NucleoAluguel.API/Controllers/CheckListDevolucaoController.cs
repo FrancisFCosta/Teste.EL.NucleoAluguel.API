@@ -3,26 +3,28 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Teste.EL.NucleoAluguel.API.Models;
 using Teste.EL.NucleoAluguel.API.Util;
 using Teste.EL.NucleoAluguel.Domain.Entities;
-using Teste.EL.NucleoCheckListDevolucao.Domain.Repositories;
+using Teste.EL.NucleoAluguel.Domain.Repositories;
+using Teste.EL.NucleoAluguel.Domain.Services;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/checklistdevolucao")]
+    [Route("api/v1/checklistdevolucao")]
     [ApiController]
     public class CheckListDevolucaoController : ControllerBase
     {
-        private readonly ICheckListDevolucaoRepository _checkListDevolucaoRepositorio;
         private readonly IMapper _mapper;
+        private readonly DevolucaoService _devolucaoService;
+        private readonly ICheckListDevolucaoRepository _checkListDevolucaoRepositorio;
 
-        public CheckListDevolucaoController(ICheckListDevolucaoRepository checkListDevolucaoRepositorio, IMapper mapper)
+        public CheckListDevolucaoController(ICheckListDevolucaoRepository checkListDevolucaoRepositorio,
+            IMapper mapper, DevolucaoService devolucaoService)
         {
-            _checkListDevolucaoRepositorio = checkListDevolucaoRepositorio;
             _mapper = mapper;
+            _devolucaoService = devolucaoService;
+            _checkListDevolucaoRepositorio = checkListDevolucaoRepositorio;
         }
 
         /// <summary>
@@ -79,9 +81,9 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Cria um novo checkListDevolucao.
+        /// Persiste informações referentes ao CheckList de Devolução.
         /// </summary>
-        /// <param name="CheckListDevolucao"> Modelo com informações do checkListDevolucao</param>
+        /// <param name="CheckListDevolucao"> Modelo com informações do CheckList de Devolução</param>
         [HttpPost()]
         [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(CheckListDevolucaoModel), StatusCodes.Status200OK)]
@@ -97,9 +99,12 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                 if (checkListDevolucaoRequisicaoPost.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(checkListDevolucaoRequisicaoPost.Notifications));
 
-                _checkListDevolucaoRepositorio.Inserir(checkListDevolucaoRequisicaoPost);
+                checkListDevolucaoRequisicaoPost = _devolucaoService.Devolver(checkListDevolucaoRequisicaoPost);
 
-                return Ok();
+                if (checkListDevolucaoRequisicaoPost.Invalid)
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(checkListDevolucaoRequisicaoPost.Notifications));
+                else
+                    return Ok();
             }
             catch (Exception)
             {
@@ -108,7 +113,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações do checkListDevolucao
+        /// Atualiza informações do checkListDevolucao.
         /// </summary>
         /// <param name="CheckListDevolucao"> Objeto contendo dados do checkListDevolucao</param>
         /// 

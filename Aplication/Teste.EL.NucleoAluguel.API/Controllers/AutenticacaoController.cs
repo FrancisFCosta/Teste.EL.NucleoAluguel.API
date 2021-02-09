@@ -11,7 +11,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/Autenticacao")]
     [ApiController]
     public class AutenticacaoController : ControllerBase
     {

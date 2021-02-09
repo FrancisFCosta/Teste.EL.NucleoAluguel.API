@@ -21,6 +21,7 @@ namespace Teste.EL.NucleoVeiculo.API.Mapping
                 .ForMember(dest => dest.ValorHora, m => m.MapFrom(src => src.ValorHora))
                 .ForMember(dest => dest.Categoria, m => m.MapFrom(src => Enums.GetName(src.Categoria)))
                 .ForMember(dest => dest.LimitePortamalas, m => m.MapFrom(src => src.LimitePortamalas))
+                .ForMember(dest => dest.EstaAlugado, m => m.MapFrom(src => src.EstaAlugado))
                 .ForMember(dest => dest.Combustivel, m => m.MapFrom(src => Enums.GetName(src.Combustivel)));
 
             CreateMap<VeiculoModel, Veiculo>()
@@ -30,6 +31,7 @@ namespace Teste.EL.NucleoVeiculo.API.Mapping
                 .ForMember(dest => dest.ValorHora, m => m.MapFrom(src => src.ValorHora))
                 .ForMember(dest => dest.Categoria, m => m.MapFrom(src => Enums.Parse<CategoriaVeiculo>(src.Categoria)))
                 .ForMember(dest => dest.LimitePortamalas, m => m.MapFrom(src => src.LimitePortamalas))
+                .ForMember(dest => dest.EstaAlugado, m => m.MapFrom(src => src.EstaAlugado))
                 .ForMember(dest => dest.Combustivel, m => m.MapFrom(src => Enums.Parse<CategoriaVeiculo>(src.Combustivel)));
         }
     }

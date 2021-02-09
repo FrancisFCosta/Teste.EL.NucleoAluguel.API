@@ -14,6 +14,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public TipoCombustivel Combustivel { get; set; }
         public double LimitePortamalas { get; set; }
         public CategoriaVeiculo Categoria { get; set; }
+        public bool EstaAlugado { get; set; }
         public Veiculo(int idVeiculo, string placa, int idMarca, int idModelo, string ano, double valorHora, TipoCombustivel tipoCombustivel, double limitePortamalas, CategoriaVeiculo categoria)
         {
             IdVeiculo = idVeiculo;

@@ -9,7 +9,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Repositories
     {
         Aluguel Obter(int idAluguel);
         List<Aluguel> ListarPorCliente(int idCliente);
-        void Inserir(Aluguel aluguel);
+        int Inserir(Aluguel aluguel);
         void Atualizar(Aluguel aluguel);
         void Deletar(int idAluguel);
     }

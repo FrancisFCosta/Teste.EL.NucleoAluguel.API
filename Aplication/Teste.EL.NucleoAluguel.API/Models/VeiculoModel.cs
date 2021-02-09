@@ -13,6 +13,7 @@ namespace Teste.EL.NucleoAluguel.API.Models
         public string Combustivel { get; set; }
         public double LimitePortamalas { get; set; }
         public string Categoria { get; set; }
+        public bool EstaAlugado { get; set; }
 
         public VeiculoModel() 
         {

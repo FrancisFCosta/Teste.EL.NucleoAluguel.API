@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Teste.EL.NucleoAluguel.Domain.Entities;
-using Teste.EL.NucleoCheckListDevolucao.Domain.Repositories;
+using Teste.EL.NucleoAluguel.Domain.Repositories;
 
-namespace Teste.EL.NucleoCheckListDevolucao.DataAccess.Repositories
+namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
 {
     public class CheckListDevolucaoRepository : ICheckListDevolucaoRepository
     {
@@ -21,10 +19,19 @@ namespace Teste.EL.NucleoCheckListDevolucao.DataAccess.Repositories
                 _checkListDevolucaoMock.RemoveAll(modeloMock => modeloMock.IdCheckListDevolucao == idCheckListDevolucao);
         }
 
-        public void Inserir(CheckListDevolucao checkListDevolucao)
+        public int Inserir(CheckListDevolucao checkListDevolucao)
         {
+            int proximoId = 0;
+
             if (checkListDevolucao != null)
+            {
+                proximoId = _checkListDevolucaoMock.Max(al => al.IdAluguel);
+                proximoId++;
+
+                checkListDevolucao.IdAluguel = proximoId;
                 _checkListDevolucaoMock.Add(checkListDevolucao);
+            }
+            return proximoId;
         }
         public void Atualizar(CheckListDevolucao checkListDevolucao)
         {

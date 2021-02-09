@@ -10,20 +10,23 @@ using Teste.EL.NucleoAluguel.API.Models;
 using Teste.EL.NucleoAluguel.API.Util;
 using Teste.EL.NucleoAluguel.Domain.Entities;
 using Teste.EL.NucleoAluguel.Domain.Repositories;
+using Teste.EL.NucleoAluguel.Domain.Services;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/alugueis")]
+    [Route("api/v1/alugueis")]
     [ApiController]
     public class AluguelController : ControllerBase
     {
-        private readonly IAluguelRepository _aluguelRepositorio;
         private readonly IMapper _mapper;
+        private readonly AluguelService _aluguelService;
+        private readonly IAluguelRepository _aluguelRepositorio;
 
-        public AluguelController(IAluguelRepository aluguelRepositorio, IMapper mapper)
+        public AluguelController(IAluguelRepository aluguelRepositorio, IMapper mapper, AluguelService aluguelService)
         {
-            _aluguelRepositorio = aluguelRepositorio;
             _mapper = mapper;
+            _aluguelService = aluguelService;
+            _aluguelRepositorio = aluguelRepositorio;
         }
 
         /// <summary>
@@ -83,6 +86,39 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <param name="Aluguel"> Modelo com informações do aluguel</param>
         [HttpPost()]
+        [Route("simulacao")]
+        [Authorize(Roles = "Operador, Cliente")]
+        [ProducesResponseType(typeof(AluguelModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
+        public IActionResult SimularAluguel([FromBody] AluguelModel aluguelModelInsersao)
+        {
+            try
+            {
+                Aluguel aluguelRequisicaoPost = _mapper.Map<AluguelModel, Aluguel>(aluguelModelInsersao);
+
+                if (aluguelRequisicaoPost.Invalid)
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(aluguelRequisicaoPost.Notifications));
+
+                var retornoSimulacao = _aluguelService.Simular(aluguelRequisicaoPost);
+
+                if (retornoSimulacao.Invalid)
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(retornoSimulacao.Notifications));
+                else
+                    return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel); throw;
+            }
+        }
+
+        /// <summary>
+        /// Cria um novo aluguel.
+        /// </summary>
+        /// <param name="Aluguel"> Modelo com informações do aluguel</param>
+        [HttpPost()]
         [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(AluguelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
@@ -97,9 +133,12 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                 if (aluguelRequisicaoPost.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(aluguelRequisicaoPost.Notifications));
 
-                _aluguelRepositorio.Inserir(aluguelRequisicaoPost);
+                var retornoAluguel = _aluguelService.Simular(aluguelRequisicaoPost);
 
-                return Ok();
+                if (retornoAluguel.Invalid)
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(retornoAluguel.Notifications));
+                else
+                    return Ok();
             }
             catch (Exception)
             {
@@ -108,7 +147,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações do aluguel
+        /// Atualiza informações do aluguel.
         /// </summary>
         /// <param name="Aluguel"> Objeto contendo dados do aluguel</param>
         /// 

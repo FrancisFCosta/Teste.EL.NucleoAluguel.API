@@ -12,7 +12,7 @@ using Teste.EL.NucleoAluguel.Domain.Repositories;
 
 namespace Teste.EL.NucleoAluguel.API.Controllers
 {
-    [Route("api/marcas")]
+    [Route("api/v1/marcas")]
     [ApiController]
     public class MarcaController : ControllerBase
     {
@@ -109,7 +109,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
-        /// Atualiza informações da marca
+        /// Atualiza informações da marca.
         /// </summary>
         /// <param name="Marca"> Objeto contendo dados da marca</param>
         /// 

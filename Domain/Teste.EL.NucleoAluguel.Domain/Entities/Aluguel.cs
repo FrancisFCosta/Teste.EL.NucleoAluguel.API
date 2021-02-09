@@ -11,6 +11,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public CategoriaVeiculo Categoria { get; set; }
         public double ValorHora { get; set; }
         public double TotalDeHoras { get; set; }
+        public double? ValorFinal { get; set; }
 
         public Aluguel(int idAluguel, int idVeiculo, int idCliente, CategoriaVeiculo categoria, double valorHora, double totalDeHoras)
         {

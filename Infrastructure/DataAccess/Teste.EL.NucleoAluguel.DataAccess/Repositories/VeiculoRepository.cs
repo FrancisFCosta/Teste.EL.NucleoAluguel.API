@@ -25,6 +25,17 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
             }
         }
 
+        public void AtualizarDisponibilidade(int idVeiculo, bool estaAlugado)
+        {
+            if (_veiculoMock != null)
+            {
+                var copiaVeiculo = _veiculoMock.Where(veiculo => veiculo.IdVeiculo == idVeiculo).FirstOrDefault();
+                copiaVeiculo.EstaAlugado = estaAlugado;
+                _veiculoMock.RemoveAll(veiculo => veiculo.IdMarca == idVeiculo);
+                _veiculoMock.Add(copiaVeiculo);
+            }
+        }
+
         public void Deletar(string placa)
         {
             if (_veiculoMock != null)
@@ -52,6 +63,14 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
             else
                 return null;
         }
+
+        public List<Veiculo> ListarDisponivel()
+        {
+            if (_veiculoMock != null)
+                return _veiculoMock.Where(veiculoMock => !veiculoMock.EstaAlugado).ToList();
+            else
+                return null;
+        } 
 
         public List<Veiculo> ListarPorCategoria(CategoriaVeiculo categoria)
         {

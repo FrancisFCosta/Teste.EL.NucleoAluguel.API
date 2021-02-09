@@ -10,10 +10,12 @@ namespace Teste.EL.NucleoAluguel.Domain.Repositories
     {
         Veiculo Obter(int id);
         Veiculo ObterPorPlaca(string placa);
+        List<Veiculo> ListarDisponivel();
         List<Veiculo> ListarPorCategoria(CategoriaVeiculo categoria);
         List<Veiculo> ListarPorCombustivel(TipoCombustivel combustivel);
         void Inserir(Veiculo veiculo);
         void Atualizar(Veiculo veiculo);
         void Deletar(string placa);
+        void AtualizarDisponibilidade(int idVeiculo, bool estaAlugado);
     }
 }
