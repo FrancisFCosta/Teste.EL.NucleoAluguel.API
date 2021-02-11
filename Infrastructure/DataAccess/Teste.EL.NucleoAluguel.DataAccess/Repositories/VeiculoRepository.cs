@@ -15,12 +15,17 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         {
             _veiculoMock = new List<Veiculo>();
             _veiculoMock.Add(new Veiculo(1,"QXH6632", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo));
+            _veiculoMock.Add(new Veiculo(2,"QUH1051", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo));
+            _veiculoMock.Add(new Veiculo(3,"PQP7777", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo));
+            _veiculoMock.Add(new Veiculo(4,"OMG7879", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo));
+            _veiculoMock.Add(new Veiculo(5,"APO1074", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo));
+            _veiculoMock.Add(new Veiculo(6,"ETA4542", 1, 1, "2020/2020", 150, TipoCombustivel.Alcool, 290, CategoriaVeiculo.Completo));
         }
         public void Atualizar(Veiculo veiculo)
         {
             if (_veiculoMock != null)
             {
-                _veiculoMock.RemoveAll(veiculo => veiculo.IdMarca == veiculo.IdVeiculo);
+                _veiculoMock.RemoveAll(veiculo => veiculo.IdVeiculo == veiculo.IdVeiculo);
                 _veiculoMock.Add(veiculo);
             }
         }
@@ -31,7 +36,7 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
             {
                 var copiaVeiculo = _veiculoMock.Where(veiculo => veiculo.IdVeiculo == idVeiculo).FirstOrDefault();
                 copiaVeiculo.EstaAlugado = estaAlugado;
-                _veiculoMock.RemoveAll(veiculo => veiculo.IdMarca == idVeiculo);
+                _veiculoMock.RemoveAll(veiculo => veiculo.IdVeiculo == idVeiculo);
                 _veiculoMock.Add(copiaVeiculo);
             }
         }

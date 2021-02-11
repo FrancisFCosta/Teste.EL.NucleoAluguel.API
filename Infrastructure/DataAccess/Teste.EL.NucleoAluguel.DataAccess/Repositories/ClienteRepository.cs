@@ -31,10 +31,19 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
                 _clienteMock.RemoveAll(clienteMock => clienteMock.IdCliente == id);
         }
 
-        public void Inserir(Cliente cliente)
+        public int Inserir(Cliente cliente)
         {
+            int proximoId = 0;
+
             if (cliente != null)
+            {
+                proximoId = _clienteMock.Max(al => al.IdCliente);
+                proximoId++;
+
+                cliente.IdCliente = proximoId;
                 _clienteMock.Add(cliente);
+            }
+            return proximoId;
         }
 
         public Cliente Obter(int id)

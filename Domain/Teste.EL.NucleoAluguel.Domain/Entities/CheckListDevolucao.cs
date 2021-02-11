@@ -17,7 +17,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public double TotalCobrancaAdicional { get => CalcularTotalCobrancaAdicional(); }
 
         public const double PercentualCobrancaAdicional = 30;
-
+        public CheckListDevolucao() { }
         public CheckListDevolucao(int idAluguel, int idVeiculo, DateTime dataDevolucao, bool carroLimpo, bool possuiArranhoes, bool possuiTanqueCheio, bool possuiAmassados, double valorAluguel)
         {
             IdAluguel = idAluguel;

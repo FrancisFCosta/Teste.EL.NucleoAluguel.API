@@ -11,7 +11,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public string Complemento { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
-
+        public Endereco() { }
         public Endereco(int idEndereco, string cep, string logradouro, string numero, string complemento, string cidade, string estado)
         {
             IdEndereco = idEndereco;

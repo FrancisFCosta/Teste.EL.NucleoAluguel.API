@@ -26,14 +26,8 @@ namespace Teste.EL.NucleoAluguel.Domain.Services
                 simulacao.AddNotification(nameof(dadosAluguel.IdVeiculo), $"Veículo [ID:{dadosAluguel.IdVeiculo}] informado para aluguel não existe.");
                 return simulacao;
             }
-
-            Cliente clienteAluguel = _clienteRepository.Obter(dadosAluguel.IdCliente);
-            if (clienteAluguel == null)
-            {
-                simulacao.AddNotification(nameof(dadosAluguel.IdVeiculo), $"Cliente [ID:{dadosAluguel.IdVeiculo}] informado para aluguel não existe.");
-                return simulacao;
-            }
-
+            simulacao.Categoria = veiculoAluguel.Categoria;
+            simulacao.ValorHora = veiculoAluguel.ValorHora;
             simulacao.ValorFinal = veiculoAluguel.ValorHora * simulacao.TotalDeHoras;
 
             return simulacao;
@@ -44,6 +38,13 @@ namespace Teste.EL.NucleoAluguel.Domain.Services
             Aluguel aluguelParaProcessamento = Simular(dadosAluguel);
             if (aluguelParaProcessamento.Valid)
             {
+                Cliente clienteAluguel = _clienteRepository.Obter(dadosAluguel.IdCliente);
+                if (clienteAluguel == null)
+                {
+                    dadosAluguel.AddNotification(nameof(dadosAluguel.IdVeiculo), $"Cliente [ID:{dadosAluguel.IdCliente}] informado para aluguel não existe.");
+                    return dadosAluguel;
+                }
+
                 aluguelParaProcessamento.IdAluguel = _aluguelRepository.Inserir(aluguelParaProcessamento);
                 _veiculoRepository.AtualizarDisponibilidade(aluguelParaProcessamento.IdVeiculo, true);
             }

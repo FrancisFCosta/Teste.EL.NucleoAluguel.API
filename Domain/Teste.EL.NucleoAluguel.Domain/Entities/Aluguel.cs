@@ -1,4 +1,5 @@
 ﻿using Flunt.Validations;
+using System;
 using Teste.EL.NucleoAluguel.Domain.Enums;
 
 namespace Teste.EL.NucleoAluguel.Domain.Entities
@@ -9,18 +10,22 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public int IdVeiculo { get; set; }
         public int IdCliente { get; set; }
         public CategoriaVeiculo Categoria { get; set; }
+        public DateTime DataPrevistaAluguel { get; set; }
         public double ValorHora { get; set; }
         public double TotalDeHoras { get; set; }
-        public double? ValorFinal { get; set; }
+        public double ValorFinal { get; set; }
 
-        public Aluguel(int idAluguel, int idVeiculo, int idCliente, CategoriaVeiculo categoria, double valorHora, double totalDeHoras)
+        public Aluguel() { }
+        public Aluguel(int idAluguel, int idVeiculo, int idCliente, CategoriaVeiculo categoria, DateTime dataPrevistaAluguel, double valorHora, double totalDeHoras, double valorFinal)
         {
             IdAluguel = idAluguel;
             IdVeiculo = idVeiculo;
             IdCliente = idCliente;
             Categoria = categoria;
             ValorHora = valorHora;
+            DataPrevistaAluguel = dataPrevistaAluguel;
             TotalDeHoras = totalDeHoras;
+            ValorFinal = valorFinal;
 
             AddNotifications(new Contract()
                 .Requires()
@@ -41,6 +46,10 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
             AddNotifications(new Contract()
                 .Requires()
                 .IsLowerThan(1, TotalDeHoras, nameof(TotalDeHoras), "O campo TotalDeHoras é inválido"));
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsLowerThan(DateTime.Today, DataPrevistaAluguel, nameof(DataPrevistaAluguel), "O campo TotalDeHoras é inválido"));
         }
     }
 }

@@ -31,8 +31,20 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
                 _usuariosMock.RemoveAll(usuarioMock => usuarioMock.IdUsuario == idUsuario);
         }
 
-        public void Inserir(Usuario usuario)
+        public int Inserir(Usuario usuario)
         {
+            int proximoId = 0;
+
+            if (usuario != null)
+            {
+                proximoId = _usuariosMock.Max(al => al.IdUsuario);
+                proximoId++;
+
+                usuario.IdUsuario = proximoId;
+                _usuariosMock.Add(usuario);
+            }
+            return proximoId;
+
             if (usuario != null)
                 _usuariosMock.Add(usuario);
         }

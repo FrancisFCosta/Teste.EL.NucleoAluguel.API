@@ -67,7 +67,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                             var cliente = _clienteRepositorio.ObterPorCPF(usuarioExistente.Login);
                             var clienteModel = _mapper.Map<Cliente, ClienteModel>(cliente);
 
-                            if (cliente.IdEndereco.HasValue)
+                            if (cliente != null && cliente.IdEndereco.HasValue)
                             {
                                 var endereco = _enderecoRepository.Obter(cliente.IdEndereco.Value);
                                 if (endereco != null)

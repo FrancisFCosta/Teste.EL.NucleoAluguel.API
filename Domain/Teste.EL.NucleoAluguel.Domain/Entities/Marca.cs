@@ -6,6 +6,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
     {
         public int IdMarca { get; set; }
         public string DescricaoMarca { get; set; }
+        public Marca() { }
         public Marca(int idMarca, string descricao)
         {
             IdMarca = idMarca;

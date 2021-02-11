@@ -44,6 +44,14 @@ namespace Teste.EL.NucleoAluguel.CrossCutting.Assemblies
                 && type.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
         }
 
+        public static IEnumerable<Type> GetDomainServices()
+        {
+            return Assembly.Load("Teste.EL.NucleoAluguel.Domain").GetTypes().Where(
+                type => type.IsClass
+                && type.Namespace != null
+                && type.Namespace.StartsWith("Teste.EL.NucleoAluguel.Domain.Services"));
+        }
+
         public static IEnumerable<Assembly> GetCurrentAssemblies()
         {
             return new Assembly[]

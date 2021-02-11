@@ -21,12 +21,14 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         private readonly IMapper _mapper;
         private readonly AluguelService _aluguelService;
         private readonly IAluguelRepository _aluguelRepositorio;
+        private readonly IVeiculoRepository _veiculoRepository;
 
-        public AluguelController(IAluguelRepository aluguelRepositorio, IMapper mapper, AluguelService aluguelService)
+        public AluguelController(IAluguelRepository aluguelRepositorio, IVeiculoRepository veiculoRepository, IMapper mapper, AluguelService aluguelService)
         {
             _mapper = mapper;
             _aluguelService = aluguelService;
             _aluguelRepositorio = aluguelRepositorio;
+            _veiculoRepository = veiculoRepository;
         }
 
         /// <summary>
@@ -61,7 +63,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <param name="idCliente"> Identificador do aluguel</param>
         /// <returns>Objeto contendo informações do Aluguel.</returns>
-        [HttpGet("{idCliente}")]
+        [HttpGet("clientes/{idCliente}")]
         [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(AluguelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
@@ -72,7 +74,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                 List<Aluguel> listaAlugueisDoCliente = _aluguelRepositorio.ListarPorCliente(idCliente);
                 List<AluguelModel> listaAluguelModel = listaAlugueisDoCliente != null && listaAlugueisDoCliente.Any() ?
                     _mapper.Map<List<Aluguel>, List<AluguelModel>>(listaAlugueisDoCliente) : new List<AluguelModel>();
-
+                PreencherVeiculosAluguel(listaAluguelModel);
                 return Ok(listaAluguelModel);
             }
             catch (Exception)
@@ -86,17 +88,17 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <param name="Aluguel"> Modelo com informações do aluguel</param>
         [HttpPost()]
+        [AllowAnonymous]
         [Route("simulacao")]
-        [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(AluguelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public IActionResult SimularAluguel([FromBody] AluguelModel aluguelModelInsersao)
+        public IActionResult SimularAluguel([FromBody] AluguelModel aluguel)
         {
             try
             {
-                Aluguel aluguelRequisicaoPost = _mapper.Map<AluguelModel, Aluguel>(aluguelModelInsersao);
+                Aluguel aluguelRequisicaoPost = _mapper.Map<AluguelModel, Aluguel>(aluguel);
 
                 if (aluguelRequisicaoPost.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(aluguelRequisicaoPost.Notifications));
@@ -106,9 +108,9 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                 if (retornoSimulacao.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(retornoSimulacao.Notifications));
                 else
-                    return Ok();
+                    return Ok(_mapper.Map<Aluguel, AluguelModel>(retornoSimulacao));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel); throw;
             }
@@ -124,21 +126,21 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public IActionResult Post([FromBody] AluguelModel aluguelModelInsersao)
+        public IActionResult Post([FromBody] AluguelModel aluguel)
         {
             try
             {
-                Aluguel aluguelRequisicaoPost = _mapper.Map<AluguelModel, Aluguel>(aluguelModelInsersao);
+                Aluguel aluguelRequisicaoPost = _mapper.Map<AluguelModel, Aluguel>(aluguel);
 
                 if (aluguelRequisicaoPost.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(aluguelRequisicaoPost.Notifications));
 
-                var retornoAluguel = _aluguelService.Simular(aluguelRequisicaoPost);
+                var retornoAluguel = _aluguelService.Alugar(aluguelRequisicaoPost);
 
                 if (retornoAluguel.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(retornoAluguel.Notifications));
                 else
-                    return Ok();
+                    return Ok(retornoAluguel);
             }
             catch (Exception)
             {
@@ -156,11 +158,11 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         [ProducesResponseType(typeof(AluguelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public IActionResult Put([FromBody] AluguelModel aluguelAtualizacao)
+        public IActionResult Put([FromBody] AluguelModel aluguel)
         {
             try
             {
-                Aluguel aluguelRequisicaoPut = _mapper.Map<AluguelModel, Aluguel>(aluguelAtualizacao);
+                Aluguel aluguelRequisicaoPut = _mapper.Map<AluguelModel, Aluguel>(aluguel);
 
                 if (aluguelRequisicaoPut.Invalid)
                     return StatusCode(StatusCodes.Status400BadRequest, new ErrorModel(aluguelRequisicaoPut.Notifications));
@@ -206,6 +208,18 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel); throw;
+            }
+        }
+
+        private void PreencherVeiculosAluguel(List<AluguelModel> listaAluguelModel)
+        {
+            if (listaAluguelModel != null)
+            {
+                foreach (var aluguel in listaAluguelModel)
+                {
+                    var veiculo = _veiculoRepository.Obter(aluguel.Veiculo.IdVeiculo);
+                    aluguel.Veiculo = _mapper.Map<Veiculo, VeiculoModel>(veiculo);
+                }
             }
         }
     }

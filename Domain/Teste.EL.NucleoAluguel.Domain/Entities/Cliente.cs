@@ -13,6 +13,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public string Email { get; set; }
         public string Celular { get; set; }
 
+        public Cliente() { }
         public Cliente(int idCliente, string nome, string cpf, DateTime aniversario, int idEndereco, string email, string celular)
         {
             IdCliente = idCliente;

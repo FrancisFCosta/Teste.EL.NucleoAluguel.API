@@ -6,6 +6,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
     {
         public string Matricula { get; set; }
         public string Nome { get; set; }
+        public Operador() { }
         public Operador(string matricula, string nome)
         {
             Matricula = matricula;

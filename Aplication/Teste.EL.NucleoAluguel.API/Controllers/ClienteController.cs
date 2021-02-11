@@ -96,11 +96,11 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                     clienteRequisicaoPost.IdEndereco = _enderecoRepository.Inserir(enderecoRequisicaoPost);
                 }
 
-                _clienteRepositorio.Inserir(clienteRequisicaoPost);
+                clienteRequisicaoPost.IdCliente = _clienteRepositorio.Inserir(clienteRequisicaoPost);
 
-                return Ok();
+                return Ok(clienteRequisicaoPost);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel); throw;
             }

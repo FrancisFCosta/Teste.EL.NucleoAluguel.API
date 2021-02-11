@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Teste.EL.NucleoAluguel.Domain.Entities;
 using Teste.EL.NucleoAluguel.Domain.Enums;
@@ -12,7 +13,7 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         public AluguelRepository()
         {
             _aluguelMock = new List<Aluguel>();
-            _aluguelMock.Add(new Aluguel(1, 1, 1, CategoriaVeiculo.Completo, 70.6, 8));
+            _aluguelMock.Add(new Aluguel(1, 1, 1, CategoriaVeiculo.Completo, DateTime.Now.AddDays(1), 26.3, 8, 0));
         }
 
         public void Deletar(int idAluguel)
@@ -25,7 +26,7 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         {
             int proximoId = 0;
 
-            if (aluguel != null) 
+            if (aluguel != null)
             {
                 proximoId = _aluguelMock.Max(al => al.IdAluguel);
                 proximoId++;

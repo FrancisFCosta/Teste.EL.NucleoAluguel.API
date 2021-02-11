@@ -36,8 +36,8 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <returns>Arquivo contendo o contrato de Aluguel.</returns>
         [HttpGet("{idAluguel}")]
-        //[Authorize(Roles = "Operador")]
-        [ProducesResponseType(typeof(ContratoModel), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Operador")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
         public ActionResult<dynamic> Get(int idAluguel)
         {
@@ -67,8 +67,8 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// <returns>Arquivo contendo modelo do contrato de Aluguel.</returns>
         [HttpGet()]
         [Route("Modelo")]
-        //[Authorize(Roles = "Operador, Cliente")]
-        [ProducesResponseType(typeof(ContratoModel), StatusCodes.Status200OK)]
+        [Authorize(Roles = "Operador, Cliente")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
         public ActionResult<dynamic> Get()
         {
@@ -77,7 +77,7 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                 System.IO.FileStream vFileStream = GeradorArquivos.ObterModeloContrato();
                 return File(vFileStream, "application/pdf", "ContratoAluguel.pdf");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel);
             }

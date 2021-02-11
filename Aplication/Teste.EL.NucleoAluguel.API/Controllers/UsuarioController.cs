@@ -55,7 +55,6 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <param name="Usuario"> Modelo com informações do usuário</param>
         [HttpPost()]
-        [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(UsuarioModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status422UnprocessableEntity)]
@@ -74,9 +73,9 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
                 if (usuarioExistente != null)
                     return StatusCode(StatusCodes.Status422UnprocessableEntity, Constantes.Mensagens.LoginUtilizadoPorUsuarioExistente);
                 else
-                    _usuarioRepositorio.Inserir(usuarioRequisicaoPost);
+                    usuarioRequisicaoPost.IdUsuario = _usuarioRepositorio.Inserir(usuarioRequisicaoPost);
 
-                return Ok();
+                return Ok(usuarioRequisicaoPost);
             }
             catch (Exception)
             {

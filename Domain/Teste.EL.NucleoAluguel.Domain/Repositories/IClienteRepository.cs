@@ -9,7 +9,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Repositories
     {        
         Cliente Obter(int idCliente);
         Cliente ObterPorCPF(string cpf);
-        void Inserir(Cliente cliente);
+        int Inserir(Cliente cliente);
         void Atualizar(Cliente cliente);
         void Deletar(int id);
     }

@@ -11,6 +11,7 @@ namespace Teste.EL.NucleoAluguel.CrossCutting.InversionOfControl
         {
             RegisterApplications(services);
             RegisterRepositories(services);
+            RegisterDomainServices(services);
         }
 
         private static void RegisterApplications(IServiceCollection services)
@@ -39,6 +40,13 @@ namespace Teste.EL.NucleoAluguel.CrossCutting.InversionOfControl
                 if (@interface != null)
                     services.AddSingleton(@interface, repo);
             }
+        }
+        private static void RegisterDomainServices(IServiceCollection services)
+        {
+            var domainServices = AssemblyReflection.GetDomainServices();
+
+            foreach (var serv in domainServices)
+                services.AddTransient(serv);
         }
     }
 }

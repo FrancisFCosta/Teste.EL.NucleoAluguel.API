@@ -9,6 +9,7 @@ namespace Teste.EL.NucleoAluguel.Domain.Entities
         public PerfilUsuario Perfil { get; set; }
         public string Login { get; set; }
         public string Senha { get; set; }
+        public Usuario() { }
 
         public Usuario(int idUsuario, PerfilUsuario perfil, string login, string senha)
         {

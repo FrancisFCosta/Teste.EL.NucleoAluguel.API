@@ -20,11 +20,15 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
     {
         private readonly IVeiculoRepository _veiculoRepositorio;
         private readonly IMapper _mapper;
+        private readonly IMarcaRepository _marcaRepository;
+        private readonly IModeloRepository _modeloRepository;
 
-        public VeiculoController(IVeiculoRepository veiculoRepositorio, IMapper mapper)
+        public VeiculoController(IVeiculoRepository veiculoRepositorio, IMarcaRepository marcaRepository, IModeloRepository modeloRepository, IMapper mapper)
         {
             _veiculoRepositorio = veiculoRepositorio;
             _mapper = mapper;
+            _marcaRepository = marcaRepository;
+            _modeloRepository = modeloRepository;
         }
 
         /// <summary>
@@ -32,8 +36,9 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         /// </summary>
         /// <param name="id"> Identificador da veiculo</param>
         /// <returns>Objeto contendo informações da Veiculo.</returns>
-        [HttpGet("{placa}")]
-        [Authorize(Roles = "Operador, Cliente")]
+        [AllowAnonymous]
+        [HttpGet()]
+        [Route("{placa}")]
         [ProducesResponseType(typeof(VeiculoModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
@@ -55,12 +60,42 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
         }
 
         /// <summary>
+        /// Lista veículos por categoria. Valores de referência: (1)Básico; (2)Completo; (3) Luxo; 
+        /// </summary>
+        /// <returns>Objeto contendo informações da Veiculo.</returns>
+        [AllowAnonymous]
+        [HttpGet("categoria")]
+        [ProducesResponseType(typeof(VeiculoModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
+        public IActionResult ListarPorCategoria([FromQuery] CategoriaVeiculo categoria)
+        {
+            try
+            {
+                List<Veiculo> listaVeiculos = _veiculoRepositorio.ListarPorCategoria(categoria);
+                List<VeiculoModel> listaVeiculoModel = listaVeiculos != null && listaVeiculos.Any() ? _mapper.Map<List<Veiculo>, List<VeiculoModel>>(listaVeiculos) : new List<VeiculoModel>();
+
+                if (listaVeiculos != null)
+                {
+                    PreencherModelo(listaVeiculos, listaVeiculoModel);
+                    PreencherMarcas(listaVeiculos, listaVeiculoModel);
+                }
+
+                return Ok(listaVeiculoModel);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel);
+            }
+        }
+
+        /// <summary>
         /// Lista veículos disponíveis para aluguel.
         /// </summary>
         /// <returns>Lista de veículos disponíveis para aluguel.</returns>
         [HttpGet()]
+        [AllowAnonymous]
         [Route("disponiveis")]
-        [Authorize(Roles = "Operador, Cliente")]
         [ProducesResponseType(typeof(VeiculoModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
@@ -69,9 +104,15 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
             try
             {
                 List<Veiculo> listaVeiculos = _veiculoRepositorio.ListarDisponivel();
-                List<VeiculoModel> listaModel = listaVeiculos != null && listaVeiculos.Any() ? _mapper.Map<List<Veiculo>, List<VeiculoModel>>(listaVeiculos) : new List<VeiculoModel>();
+                List<VeiculoModel> listaVeiculoModel = listaVeiculos != null && listaVeiculos.Any() ? _mapper.Map<List<Veiculo>, List<VeiculoModel>>(listaVeiculos) : new List<VeiculoModel>();
 
-                return Ok(listaModel);
+                if (listaVeiculos != null)
+                {
+                    PreencherModelo(listaVeiculos, listaVeiculoModel);
+                    PreencherMarcas(listaVeiculos, listaVeiculoModel);
+                }
+
+                return Ok(listaVeiculoModel);
             }
             catch (Exception)
             {
@@ -79,54 +120,43 @@ namespace Teste.EL.NucleoAluguel.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Lista veículos por categoria. Valores de referência: (1)Básico; (2)Completo; (3) Luxo; 
-        /// </summary>
-        /// <param name="categoria"> codigo de categoria do veículo</param>
-        /// <returns>Objeto contendo informações da Veiculo.</returns>
-        [HttpGet("{categoria}")]
-        [Authorize(Roles = "Operador, Cliente")]
-        [ProducesResponseType(typeof(VeiculoModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public IActionResult Get(CategoriaVeiculo categoria)
+        private void PreencherMarcas(List<Veiculo> listaVeiculos, List<VeiculoModel> listaVeiculoModel)
         {
-            try
+            var modelos = listaVeiculos.Select(v => v.IdMarca)?.Distinct()?.ToList();
+            List<ModeloModel> listaModelos = new List<ModeloModel>();
+            if (modelos != null && modelos.Any())
             {
-                List<Veiculo> listaVeiculos = _veiculoRepositorio.ListarPorCategoria(categoria);
-                List<VeiculoModel> listaModel = listaVeiculos != null && listaVeiculos.Any() ?_mapper.Map<List<Veiculo>, List<VeiculoModel>>(listaVeiculos) : new List<VeiculoModel>();
-
-                return Ok(listaModel);
+                foreach (var modelo in modelos)
+                {
+                    var modeloRecuperado = _modeloRepository.Obter(modelo);
+                    if (modeloRecuperado != null)
+                        listaModelos.Add(_mapper.Map<Modelo, ModeloModel>(modeloRecuperado));
+                }
             }
-            catch (Exception)
+            listaVeiculoModel.ForEach(veiculo =>
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel);
-            }
+                veiculo.Modelo = listaModelos.Where(m => m.IdModelo == veiculo.Modelo.IdModelo).FirstOrDefault();
+            });
         }
 
-        /// <summary>
-        /// Lista veículos por tipo de combustível. Valores de referência: (1)Álcool; (2)Gasolina; (3) Diesel; 
-        /// </summary>
-        /// <param name="combustivel"> codigo de tipo de combustivel do veículo</param>
-        /// <returns>Objeto contendo informações da Veiculo.</returns>
-        [HttpGet("{combustivel}")]
-        [Authorize(Roles = "Operador, Cliente")]
-        [ProducesResponseType(typeof(VeiculoModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
-        public IActionResult Get(TipoCombustivel combustivel)
+        private void PreencherModelo(List<Veiculo> listaVeiculos, List<VeiculoModel> listaVeiculoModel)
         {
-            try
+            var marcas = listaVeiculos.Select(v => v.IdMarca)?.Distinct()?.ToList();
+            List<MarcaModel> listaMarcas = new List<MarcaModel>();
+            if (marcas != null && marcas.Any())
             {
-                List<Veiculo> listaVeiculos = _veiculoRepositorio.ListarPorCombustivel(combustivel);
-                List<VeiculoModel> listaModel = listaVeiculos != null && listaVeiculos.Any() ? _mapper.Map<List<Veiculo>, List<VeiculoModel>>(listaVeiculos) : new List<VeiculoModel>();
+                foreach (var marca in marcas)
+                {
+                    var marcaRecuperada = _marcaRepository.Obter(marca);
+                    if (marcaRecuperada != null)
+                        listaMarcas.Add(_mapper.Map<Marca, MarcaModel>(marcaRecuperada));
+                }
+            }
 
-                return Ok(listaModel);
-            }
-            catch (Exception)
+            listaVeiculoModel.ForEach(veiculo =>
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, Constantes.Mensagens.ServicoIndisponivel);
-            }
+                veiculo.Marca = listaMarcas.Where(m => m.IdMarca == veiculo.Marca.IdMarca).FirstOrDefault();
+            });
         }
 
         /// <summary>
