@@ -1,6 +1,6 @@
 # Teste.EL.NucleoAluguel.API
 
-O Projeto representa uma API criada para atender um cenário hipotético de uma locadora de veículos. Por meio da api é possível criar 
+O Projeto representa uma API criada para atender um cenário hipotético de uma locadora de veículos. Mais informações sobre o funcionamento podem ser verificadas na sessão Resquisitos do projeto. 
 
 ## Decisões Técnicas
 
@@ -19,7 +19,9 @@ O Projeto representa uma API criada para atender um cenário hipotético de uma 
 
 ## Requisitos do projeto
 
-• Prover um Serviço Web com arquitetura a seu critério para atender as demandas do Site e/ou App • Um serviço que deverá disponibilizar autenticação e autorização para usuários com os perfis: OPERADOR, CLIENTE.
+• Prover um Serviço Web com arquitetura a seu critério para atender as demandas do Site e/ou App 
+
+• Um serviço que deverá disponibilizar autenticação e autorização para usuários com os perfis: OPERADOR, CLIENTE.
 
 • O cadastro de usuário terá os campos login, senha, onde o campo login pode ser o CPF do cliente (perfil CLIENTE) ou a matrícula (perfil OPERADOR). 
 
