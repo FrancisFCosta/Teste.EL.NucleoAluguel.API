@@ -16,6 +16,11 @@ O Projeto representa uma API criada para atender um cenário hipotético de uma 
 
 • Implementando Autenticação e Autorização no esquema Bearer Authentication + JWT. A escolha é justificada por ser uma solução simples e robusta o suficiente para resolver o problema (Keep it Simple Stupid).
 
+## Diagrama de classes
+
+Para melhor entendimento de como estão relacionadas as entidades do domínio, foi criado um diagrama de classes para compor esta documentação.
+
+![alt text](https://github.com/FrancisFCosta/Teste.EL.NucleoAluguel.API/blob/master/NucleoAluguel_DiagramaDeClasses.png?raw=true)
 
 ## Requisitos do projeto
 
