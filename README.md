@@ -1,6 +1,6 @@
 # Teste.EL.NucleoAluguel.API
 
-O Projeto representa uma API criada para atender um cenário hipotético de uma locadora de veículos. Mais informações sobre o funcionamento podem ser verificadas na seção Resquisitos do projeto. 
+O Projeto representa uma API criada para atender um cenário hipotético de uma locadora de veículos. Duvidas sobre o relacionamento entre as entidades podem ser esclarecidas na seção Diagrama de classes.  Mais informações sobre o funcionamento podem ser verificadas na seção Resquisitos do projeto. 
 
 ## Decisões Técnicas
 
