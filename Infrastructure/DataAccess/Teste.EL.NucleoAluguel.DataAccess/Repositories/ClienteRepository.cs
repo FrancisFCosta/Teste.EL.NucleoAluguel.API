@@ -13,7 +13,7 @@ namespace Teste.EL.NucleoAluguel.DataAccess.Repositories
         public ClienteRepository()
         {
             _clienteMock = new List<Cliente>();
-            _clienteMock.Add(new Cliente(1, "Francis Costa", "12542471657", new DateTime(1996, 4, 5), 1, "francis.costa@localiza.com", "31991727960"));
+            _clienteMock.Add(new Cliente(1, "Francis Costa", "12345678910", new DateTime(1996, 4, 5), 1, "francisf.costa@hotmail.com", "31991727960"));
         }
 
         public void Atualizar(Cliente cliente)
